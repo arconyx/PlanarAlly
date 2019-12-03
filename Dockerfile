@@ -3,6 +3,12 @@
 ################################
 FROM node:12-alpine as BUILDER
 
+RUN apk add openssh \
+     && echo "root:UghDocker!" | chpasswd
+     
+COPY sshd_config /etc/ssh/
+EXPOSE 80 2222
+
 WORKDIR /usr/src/client
 # Copy first package.json so changes in code dont require to reinstall all npm modules
 COPY client/package.json client/package-lock.json ./
